@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Works on Paper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Suisse+Int%27l:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <!-- Fallback Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --white: #f9f8f6;
+      --black: #0e0e0e;
+      --mid:   #5a5a5a;
+      --rule:  #d6d4cf;
+      --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+      --font-sans:  'Outfit', 'Helvetica Neue', sans-serif;
+      --font-mono:  'DM Mono', 'Courier New', monospace;
+    }
+
+    html {
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--white);
+    }
+
+    /* ── HEADER ───────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      height: 64px;
+    }
+
+    .header-left {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .header-center {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    .header-right {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-align: right;
+    }
+
+    /* ── COLLECTION INTRO ─────────────────── */
+    .collection-intro {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--rule);
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .collection-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .collection-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 6vw, 5.2rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+
+    .collection-title em {
+      font-style: italic;
+    }
+
+    .collection-meta {
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 200;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+    }
+
+    .collection-meta span::before {
+      content: '—';
+      margin-right: 0.5rem;
+      opacity: 0.4;
+    }
+
+    /* ── GRID ─────────────────────────────── */
+    .gallery {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+      columns: 3;
+      column-gap: clamp(1rem, 2.5vw, 2rem);
+    }
+
+    @media (max-width: 900px) {
+      .gallery { columns: 2; }
+    }
+
+    @media (max-width: 560px) {
+      .gallery { columns: 1; }
+    }
+
+    /* ── ARTWORK CARD ─────────────────────── */
+    .artwork {
+      break-inside: avoid;
+      margin-bottom: clamp(1rem, 2.5vw, 2rem);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .artwork-frame {
+      overflow: hidden;
+      background: #e8e6e1;
+      position: relative;
+    }
+
+    .artwork-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.4s ease;
+      filter: brightness(0.98) contrast(1.01);
+    }
+
+    .artwork:hover .artwork-frame img {
+      transform: scale(1.025);
+      filter: brightness(1) contrast(1);
+    }
+
+    /* number badge */
+    .artwork-number {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.22);
+      padding: 0.2em 0.5em;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .artwork-info {
+      padding: 1rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+    }
+
+    .artwork-title {
+      font-family: var(--font-serif);
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+    }
+
+    .artwork-artist {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .artwork-divider {
+      width: 1.5rem;
+      height: 1px;
+      background: var(--rule);
+      margin: 0.5rem 0 0;
+    }
+
+    /* ── LIGHTBOX ─────────────────────────── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(14, 14, 14, 0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-inner {
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      transform: translateY(12px);
+      transition: transform 0.35s ease;
+    }
+
+    .lightbox.open .lightbox-inner {
+      transform: translateY(0);
+    }
+
+    .lightbox-inner img {
+      max-width: 90vw;
+      max-height: 75vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox-caption {
+      text-align: center;
+    }
+
+    .lightbox-caption .artwork-title {
+      color: var(--white);
+      font-size: 1.15rem;
+    }
+
+    .lightbox-caption .artwork-artist {
+      color: rgba(249,248,246,0.45);
+      margin-top: 0.3rem;
+    }
+
+    .lightbox-caption .artwork-desc {
+      color: rgba(249,248,246,0.35);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 200;
+      letter-spacing: 0.04em;
+      margin-top: 0.5rem;
+      max-width: 36rem;
+    }
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: transparent;
+      cursor: pointer;
+      color: var(--white);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .lightbox-close:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* nav arrows */
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--white);
+      cursor: pointer;
+      padding: 0.8rem 1.1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .lightbox-nav:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+
+    @media (max-width: 560px) {
+      .lightbox-prev, .lightbox-next { display: none; }
+    }
+
+    /* ── FOOTER ───────────────────────────── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rule);
+    }
+
+    /* ── ENTER ANIMATION ──────────────────── */
+    .artwork {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.55s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <span class="header-left">Works on Paper</span>
+    <span class="header-center">Gallery</span>
+    <span class="header-right">2024</span>
+  </header>
+
+  <!-- COLLECTION INTRO -->
+  <div class="collection-intro">
+    <p class="collection-label">Collection No. 01</p>
+    <h1 class="collection-title">Between Light<br><em>and Shadow</em></h1>
+    <div class="collection-meta">
+      <span>Selected Works</span>
+      <span>Mixed Media</span>
+    </div>
+  </div>
+
+  <!-- GALLERY GRID -->
+  <main class="gallery" id="gallery"></main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev">←</button>
+    <button class="lightbox-nav lightbox-next" id="lbNext">→</button>
+    <div class="lightbox-inner">
+      <img id="lbImg" src="" alt="" />
+      <div class="lightbox-caption">
+        <p class="artwork-title" id="lbTitle"></p>
+        <p class="artwork-artist" id="lbArtist"></p>
+        <p class="artwork-desc" id="lbDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer style="border-top:1px solid var(--rule); padding: 2rem clamp(1.5rem,5vw,4rem); display:flex; justify-content:space-between; max-width:1400px; margin: 0 auto;">
+    <p style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--rule);">
+      All rights reserved
+    </p>
+    <p style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--rule);">
+      Replace placeholder images with your own
+    </p>
+  </footer>
+
+  <script>
+    /* ── ARTWORK DATA ─────────────────────────
+       Loaded dynamically from manifest.json,
+       which is generated by serve.py
+    ──────────────────────────────────────────── */
+    let artworks = [];
+
+    const gallery = document.getElementById('gallery');
+
+    function renderGallery() {
+      gallery.innerHTML = '';
+      artworks.forEach((art, i) => {
+        const delay = (i * 0.07).toFixed(2);
+        const el = document.createElement('div');
+        el.className = 'artwork';
+        el.style.animationDelay = `${delay}s`;
+        el.innerHTML = `
+          <div class="artwork-frame">
+            <img src="${art.src}" alt="${art.title}" loading="lazy" />
+            <span class="artwork-number">${String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="artwork-info">
+            <p class="artwork-title">${art.title}</p>
+            <p class="artwork-artist">${art.artist}</p>
+            <div class="artwork-divider"></div>
+          </div>
+        `;
+        el.addEventListener('click', () => openLightbox(i));
+        gallery.appendChild(el);
+      });
+    }
+
+    function showError(msg) {
+      gallery.innerHTML = `
+        <div style="
+          grid-column: 1/-1;
+          padding: 4rem 0;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          letter-spacing: 0.12em;
+          color: var(--mid);
+          text-align: center;
+          line-height: 2;
+        ">
+          ${msg}
+        </div>`;
+    }
+
+    fetch('manifest.json')
+      .then(r => {
+        if (!r.ok) throw new Error('manifest_missing');
+        return r.json();
+      })
+      .then(data => {
+        if (!data.artworks || data.artworks.length === 0) {
+          showError('No images found.<br>Add images + .meta files to the images/ folder and restart serve.py');
+          return;
+        }
+
+        // Populate collection header from manifest if present
+        if (data.collection) {
+          const c = data.collection;
+          if (c.label)    document.querySelector('.collection-label').textContent = c.label;
+          if (c.title)    document.querySelector('.collection-title').innerHTML   = c.title;
+          if (c.meta)     document.querySelector('.collection-meta').innerHTML    = c.meta.map(m => `<span>${m}</span>`).join('');
+          if (c.siteTitle) document.querySelector('.header-center').textContent  = c.siteTitle;
+          if (c.year)     document.querySelector('.header-right').textContent    = c.year;
+          if (c.name)     document.querySelector('.header-left').textContent     = c.name;
+        }
+
+        artworks = data.artworks;
+        renderGallery();
+      })
+      .catch(err => {
+        if (err.message === 'manifest_missing') {
+          showError(
+            'manifest.json not found.<br>' +
+            'Run <code style="background:#f0eeea;padding:0.15em 0.4em">python serve.py</code> ' +
+            'in this folder and open <code style="background:#f0eeea;padding:0.15em 0.4em">http://localhost:8000</code>'
+          );
+        } else {
+          showError('Failed to load gallery: ' + err.message);
+        }
+      });
+
+    /* ── LIGHTBOX LOGIC ───────────────────── */
+    let current = 0;
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lbImg');
+    const lbTitle = document.getElementById('lbTitle');
+    const lbArtist= document.getElementById('lbArtist');
+
+    function openLightbox(index) {
+      current = index;
+      update();
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function update() {
+      const a = artworks[current];
+      lbImg.src    = a.src;
+      lbImg.alt    = a.title;
+      lbTitle.textContent  = a.title;
+      lbArtist.textContent = a.artist;
+      const lbDesc = document.getElementById('lbDesc');
+      lbDesc.textContent = a.description || '';
+    }
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lbPrev').addEventListener('click', () => {
+      current = (current - 1 + artworks.length) % artworks.length;
+      update();
+    });
+    document.getElementById('lbNext').addEventListener('click', () => {
+      current = (current + 1) % artworks.length;
+      update();
+    });
+
+    lb.addEventListener('click', e => {
+      if (e.target === lb) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft')  { current = (current - 1 + artworks.length) % artworks.length; update(); }
+      if (e.key === 'ArrowRight') { current = (current + 1) % artworks.length; update(); }
+    });
+
+    /* ── SWIPE SUPPORT (mobile) ───────────── */
+    let touchX = null;
+    lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+    lb.addEventListener('touchend',   e => {
+      if (touchX === null) return;
+      const diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        current = diff > 0
+          ? (current + 1) % artworks.length
+          : (current - 1 + artworks.length) % artworks.length;
+        update();
+      }
+      touchX = null;
+    });
+  </script>
+</body>
+</html>

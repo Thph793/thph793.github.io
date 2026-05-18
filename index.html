@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery — Works on Paper</title>
+  <title>Gallery — Anna M. Schultens</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Suisse+Int%27l:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
@@ -189,38 +189,6 @@
       pointer-events: none;
     }
 
-    .artwork-info {
-      padding: 1rem 0 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.18rem;
-    }
-
-    .artwork-title {
-      font-family: var(--font-serif);
-      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.2;
-      letter-spacing: 0.01em;
-    }
-
-    .artwork-artist {
-      font-family: var(--font-sans);
-      font-size: 0.72rem;
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--mid);
-    }
-
-    .artwork-divider {
-      width: 1.5rem;
-      height: 1px;
-      background: var(--rule);
-      margin: 0.5rem 0 0;
-    }
-
     /* ── LIGHTBOX ─────────────────────────── */
     .lightbox {
       position: fixed;
@@ -269,11 +237,17 @@
     .lightbox-caption .artwork-title {
       color: var(--white);
       font-size: 1.15rem;
+      font-family: var(--font-serif);
+      font-style: italic;
     }
 
     .lightbox-caption .artwork-artist {
       color: rgba(249,248,246,0.45);
       margin-top: 0.3rem;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     .lightbox-caption .artwork-desc {
@@ -371,16 +345,16 @@
 <body>
 
   <header>
-    <span class="header-left">Archival Captures</span>
-    <span class="header-center">Visual Log</span>
+    <span class="header-left">Anna M. Schultens</span>
+    <span class="header-center">Gallerie</span>
     <span class="header-right">2026</span>
   </header>
 
   <div class="collection-intro">
     <p class="collection-label">Collection No. 02</p>
-    <h1 class="collection-title">May 2026<br><em>Chronicles</em></h1>
+    <h1 class="collection-title">Kollektion<br><em>„Wald“</em></h1>
     <div class="collection-meta">
-      <span>Image Stream</span>
+      <span>Oelgemaelde</span>
       <span>Digital Archival</span>
     </div>
   </div>
@@ -411,7 +385,6 @@
   </footer>
 
   <script>
-    // Asset filename collection from user workspace
     const fileNames = [
       "20260514_185057.jpg",
       "20260514_185110.jpg",
@@ -433,14 +406,13 @@
 
     const baseUrl = "https://thph793.github.io/";
 
-    // Generate cleaner array structures with custom metadata
     const artworks = fileNames.map(fileName => {
       let displayTitle = fileName.replace("IMG_", "").replace(".jpg", "");
       return {
         src: baseUrl + fileName,
         title: "Capture " + displayTitle,
         artist: "Anna M. Schultens",
-        description: `Source asset identifier: ${fileName}`
+        description: `Asset Reference: ${fileName}`
       };
     });
 
@@ -457,11 +429,6 @@
           <div class="artwork-frame">
             <img src="${art.src}" alt="${art.title}" loading="lazy" />
             <span class="artwork-number">${String(i + 1).padStart(2, '0')}</span>
-          </div>
-          <div class="artwork-info">
-            <p class="artwork-title">${art.title}</p>
-            <p class="artwork-artist">${art.artist}</p>
-            <div class="artwork-divider"></div>
           </div>
         `;
         el.addEventListener('click', () => openLightbox(i));
@@ -534,7 +501,6 @@
       touchX = null;
     });
 
-    // Execute engine execution sequence
     renderGallery();
   </script>
 </body>
